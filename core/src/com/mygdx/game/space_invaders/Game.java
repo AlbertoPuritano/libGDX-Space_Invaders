@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game {
 	ArrayList<Spaceship> spaceships;
-	Texture img;
+	//Texture img; //useless texture (do you love your ram LOL)
+	boolean isdeathgood=false; //clear bullet arraylist when necessary
 	Texture[] lives;
 	Aliens aliens;
 	int score;
@@ -19,7 +20,7 @@ public class Game {
 	GraphicManager graphicManager;
 	ArrayList<ExplosionCounter> destructions;
 	int lifes;
-	
+
 	public Game() {
 		spaceships = new ArrayList<Spaceship>();
 		spaceships.add(new Spaceship());
@@ -27,7 +28,7 @@ public class Game {
 		//la classe ha sempre 2 spaceships, poi in base alla variabile players nel runGame viene gestito solo il
 		//primo o anche il secondo
 		
-		img = new Texture("Ship1.png");
+		//img = new Texture("Ship1.png"); //watch in row 13
 		lives = new Texture[3];
 		aliens = new Aliens();
 		bunkers = new Bunkers();
@@ -104,11 +105,15 @@ public class Game {
 					spaceships.add(new Spaceship());
 					lifes--;
 					aliens.bullets.remove(i);
+					isdeathgood=true;
 					if (lifes==0)
 						outcome=2;
-					break;
+					i=aliens.bullets.size();
 				}
+
 			}
+				if(isdeathgood){
+					aliens.bullets.clear();isdeathgood=false;} //add bullet's clear after death
 			
 			for (int i = 0; i < destructions.size(); i++)	{
 				if (!graphicManager.drawExplosion(destructions.get(i), batch)){
@@ -130,8 +135,10 @@ public class Game {
 
 	
 	public void dispose() {
-		img.dispose();
+		//img.dispose(); //row 13
 		graphicManager.dispose();
+		for(int i=0;i<lives.length;i++) //add lives texture dispose (love your ram lifecicle please)
+			lives[i].dispose();
 	}
 	
 	public void nextLevel() {
