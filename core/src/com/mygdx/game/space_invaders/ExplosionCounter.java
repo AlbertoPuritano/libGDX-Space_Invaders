@@ -13,7 +13,6 @@ public class ExplosionCounter {
 	}
 	public int getX() {return X;}
 	public int getY() {return Y;}
-	public int getCont() {return cont;}
 	public boolean next() {
 		if (cont == 0)
 			return false;
